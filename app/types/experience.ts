@@ -1,14 +1,22 @@
 export type Experience =  {
     role: string;
-    companyLogo: string;
+    company?: string;
+    companyLogo?: string;
     period: string;
     description: string[];
   }
-export type ProjectCardProps = {
-    title?: string;
-    description?: string;
-    technologies: string[];
-    imageUrl: string;
-    pageUrl?: string;
-    source?: string;
-};
+// types/experience.ts
+export type ProjectCardProps =
+  | {
+      loading: true;
+    }
+  | {
+      title: string;
+      description: string;
+      imageUrl: string;
+      technologies: string[];
+      pageUrl: string;
+      source: string;
+      loading?: false;
+
+    };

@@ -1,59 +1,17 @@
-'use client';
-import React from "react";
-import {
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
+"use client";
 
-    Link,
-} from "@heroui/react";
-import Image from "next/image";
-export const MyLogo = () => {
-    return (
-        <Image
-            alt="My Logo"
-            className="mr-2 h-8 w-auto  font-white "
-            src="./images/GordonSignature.png"
-            width={150}
-            height={44}
-        />
-    );
-};
+import Link from "next/link";
 
 export default function GordonNavBar() {
-
-    return (
-        <Navbar className="bg-[#222222] py-6 h-[60px] px-4 ">
-            <NavbarBrand >
-                <MyLogo />
-            </NavbarBrand>
-            <NavbarContent className="hidden sm:flex gap-[60px] font-serif ml-auto" justify="end">
-                <NavbarItem>
-                    <Link className="text-white" href="#">
-                        Home
-                    </Link>
-                </NavbarItem>
-                <NavbarItem >
-                    <Link className="text-white font-Inter" href="#Projects">
-                        Projects
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link className="text-white" href="#Experience">
-                        Experience
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link className="text-white" href="#contact">
-                        Contact
-                    </Link>
-                </NavbarItem>
-
-            </NavbarContent>
-
-        </Navbar>
-    );
+  return (
+    <header className="site-nav">
+      <Link href="/" className="site-nav__brand" aria-label="Gordon Wong, home">GW<span>®</span></Link>
+      <nav aria-label="Primary navigation">
+        <Link href="/#Projects">Work</Link>
+        <Link href="/#Experience">About</Link>
+        <Link href="/interests">Interests</Link>
+      </nav>
+      <Link href="/#contact" className="site-nav__contact"><i /> Available for opportunities</Link>
+    </header>
+  );
 }
-

@@ -1,134 +1,121 @@
-"use client"
-import GordonNavBar from "@/components/GordonNavBar/GordonNavBar";
-import { HeroUIProvider } from "@heroui/react";
-import Image from "next/image"
-import { GordonAnimatedText } from "@/components/GordonAnimatedText/GordonAnimatedText";
-import { Button } from "@heroui/react";
-import ProjectCard from "@/components/GordonProjectCard/GordonProjectCard";
-import { projectData } from "@/constants/ExperienceData";
-import ExperienceCard from "@/components/GordonExperienceCard/GordonExperienceCard";
-import { experienceData, EducationData } from "@/constants/ExperienceData";
-import { Footer } from "@/components/Footer/Footer";
-import Link from "next/link";
-type AvatarProps = {
-  src: string;
-  alt?: string;
-  size?: number;
-  className?: string;
-};
-function Avatar({ src, alt = 'User Avatar', size = 250, className }: AvatarProps) {
+"use client";
 
-  return (
-    <div
-      className={`relative rounded-full overflow-hidden ${className}`}
-      style={{ width: size, height: size }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        // height={300}
-        // width={300}
-        fill
-        className="object-cover object-center"
-      />
-    </div>
-  );
-}
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import GordonNavBar from "@/components/GordonNavBar/GordonNavBar";
+import ProjectCard from "@/components/GordonProjectCard/GordonProjectCard";
+import ExperienceCard from "@/components/GordonExperienceCard/GordonExperienceCard";
+import SectionIntro from "@/components/SectionIntro/SectionIntro";
+import { Footer } from "@/components/Footer/Footer";
+import { EducationData, experienceData, projectData } from "@/constants/ExperienceData";
+import IntroGateway from "@/components/IntroGateway/IntroGateway";
+import { assetPath } from "@/utils/assetPath";
+
+const reveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const capabilities = [
+  { number: "01", title: "Product engineering", detail: "Next.js · React · TypeScript · Node.js" },
+  { number: "02", title: "Applied intelligence", detail: "Python · ML · RAG · Multi-agent systems" },
+  { number: "03", title: "Scientific computing", detail: "C++ · Numerical methods · Data systems" },
+];
 
 export default function Home() {
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   return (
-    <HeroUIProvider>
-      <div className="w-full min-h-screen bg-black overflow-hidden" >
-        <div>
-          <GordonNavBar />
-        </div>
+    <div className="site-frame">
+      <IntroGateway />
+      <GordonNavBar />
+      <main>
+        <section ref={heroRef} className="hero" id="Profile">
+          <motion.div
+            className="hero__portrait"
+            style={{ y: portraitY, scale: portraitScale }}
+          >
+            <Image src={assetPath("/images/profolio.JPG")} alt="Gordon Wong beneath a canopy of lights" fill priority sizes="(max-width: 767px) 100vw, 48vw" className="object-cover" />
+          </motion.div>
+          <div className="hero__shade" />
 
-        <div className="bg-black h-auto px-4 py-[80px]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-            {/* Avatar section */}
-            <div className="flex justify-center md:justify-start">
-              <Avatar src={`./images/profolio.JPG`} alt="Gordon Signature" size={300} />
+          <motion.div
+            className="hero__content"
+          >
+            <motion.p variants={reveal} className="eyebrow text-accent">Software engineer · Hong Kong</motion.p>
+            <div className="hero__heading-wrap">
+              <motion.h1 variants={reveal} className="hero__heading">Gordon<br />Wong<span className="text-accent">.</span></motion.h1>
+              <motion.p variants={reveal} className="hero__index" aria-hidden="true">01—26</motion.p>
             </div>
+            <motion.div variants={reveal} className="hero__footer">
+              <p>I build thoughtful software at the intersection of computational science, applied AI, and human experience.</p>
+              <div className="hero__links"><Link className="text-link" href="#Projects">Selected work <span aria-hidden="true">↘</span></Link><a className="text-link text-link--muted" href="https://drive.google.com/file/d/1DOLApQiA76RKxifcA7lyFdBLsTlaObEU/view?usp=sharing" target="_blank" rel="noreferrer">CV <span aria-hidden="true">↗</span></a></div>
+            </motion.div>
+          </motion.div>
 
-            {/* Text section */}
-            <div className="md:col-span-2 flex flex-col justify-center items-center md:items-start text-center md:text-left" id="Profile">
-              <GordonAnimatedText sentence="I code and create content " />
-              <GordonAnimatedText sentence="to make impact!" className="text-[#FF8660]" />
-              <h1 className="text-[#C5C5C5] text-[18px] font-bold mt-4">
-                Computational Science ✖ Software Engineeing ✖ Humanities <br />
-              </h1>
-              <h2 className="text-[#C5C5C5] mt-2">
-                I am a software engineer with a background in science and a love in literature <br />
-                I am dedicated to creating innovative solutions that bridge the gap between technology and human experience. <br />
-              </h2>
+          <div className="hero__rail"><span>Engineer</span><span>Researcher</span><span>Creator</span></div>
+        </section>
+
+        <motion.section className="intro-section section-shell" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={{ visible: { transition: { staggerChildren: 0.12 } } }}>
+          <motion.p variants={reveal} className="eyebrow">What I do</motion.p>
+          <motion.p variants={reveal} className="intro-statement">Turning difficult ideas into <em>clear, useful</em> products—from numerical solvers to intelligent interfaces.</motion.p>
+        </motion.section>
+
+        <section className="projects-section" id="Projects">
+          <div className="section-shell">
+            <SectionIntro eyebrow="Selected work / 2024—26" title="Things I’ve built." description="A focused selection of applied AI, machine learning, and systems projects." />
+            <div className="project-list">
+              {projectData.slice(0, 5).map((project, index) => <ProjectCard key={index} {...project} index={index} />)}
+            </div>
+            <a className="text-link projects-more" href="https://github.com/gordonwky/" target="_blank" rel="noreferrer">More experiments on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+        </section>
+
+        <section className="capabilities-section" id="Programming">
+          <div className="section-shell capabilities-grid">
+            <div className="capabilities-heading">
+              <p className="eyebrow text-accent">Capabilities</p>
+              <h2>Wide lens.<br /><span>Sharp focus.</span></h2>
+            </div>
+            <div className="capabilities-list">
+              {capabilities.map((capability) => (
+                <motion.div key={capability.number} className="capability-row" initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.6 }} transition={{ duration: 0.6 }}>
+                  <span>{capability.number}</span>
+                  <div><h3>{capability.title}</h3><p>{capability.detail}</p></div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-black h-[120px] flex justify-center items-center">
-          <Button color="default" as={Link} href="#contact" radius="full" className="bg-white h-[64px] w-[195px] font-bold text-[18px]" disableAnimation disableRipple >Get in Touch</Button>
-          <Button color="default" as={Link} href="https://drive.google.com/file/d/1DOLApQiA76RKxifcA7lyFdBLsTlaObEU/view?usp=sharing" variant="ghost" radius="full" className="text-white h-[64px] w-[195px] font-bold text-[18px] boader boader-1 boader-white " disableAnimation disableRipple >Download CV</Button>
-        </div>
-
-        <div className=" py-2 flex-col gap-2 bg-black px-4" id="Programming">
-          <h1 className="  text-[#C5C5C5] text-[18px] font-bold ">
-            Experience with
-          </h1>
-          <div className="flex flex-wrap gap-6 mt-6 justify-center h-auto sm:h-[40px]">
-            <Image src={`./images/reactjs.png`} alt="React" width={50} height={50} />
-            <Image src={`./images/python.png`} alt="Python" width={50} height={50} />
-            <Image src={`./images/c-logo-black-and-white.png`} alt="C++" width={50} height={50} />
-            <Image src={`./images/css.png`} alt="CSS" width={50} height={50} />
-            <Image src={`./images/html.png`} alt="HTML" width={50} height={50} />
-            <Image src={`./images/nodejs.png`} alt="Node.js" width={50} height={50} />
-            <Image src={`./images/sql.png`} alt="SQL" width={50} height={50} className="invert" />
+        <section className="experience-section" id="Experience">
+          <div className="section-shell">
+            <SectionIntro eyebrow="Experience / 2020—Now" title="Where I’ve made an impact." description="Engineering, research, and teaching roles shaped by curiosity and measurable outcomes." />
+            <div className="experience-list">
+              {experienceData.map((experience, index) => <ExperienceCard key={`${experience.role}-${experience.period}`} {...experience} index={index} />)}
+            </div>
           </div>
+        </section>
 
-        </div>
-
-        <div>
-
-          <h1 className=" py-2 px-4 text-2xl font-bold bg-[#8C24F3] bg-clip-text text-transparent" id="Education" >
-            Education
-          </h1>
-          <div className="space-y-6">
-            {EducationData.map((exp, index) => (
-              <ExperienceCard
-                key={index}
-                role={exp.role}
-                companyLogo={exp.companyLogo}
-                period={exp.period}
-                description={exp.description}
-              />
-            ))}
+        <section className="education-section" id="Education">
+          <div className="section-shell education-grid">
+            <div><p className="eyebrow">Education</p><h2>Physics mind.<br /><em>Builder’s hands.</em></h2></div>
+            <div className="education-list">
+              {EducationData.map((education) => (
+                <div className="education-item" key={education.role}>
+                  <p>{education.period}</p><h3>{education.role}</h3><span>{education.description[0]}</span>
+                </div>
+              ))}
+            </div>
           </div>
-
-          <h1 className=" py-2 px-4 text-2xl font-bold bg-gradient-to-r from-[#FF8660] to-[#D5491D] bg-clip-text text-transparent" id="Projects" >
-            Projects
-          </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-            {projectData.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
-          </div>
-
-          <h1 className=" py-4 pt-2 px-4 text-2xl font-bold bg-gradient-to-r from-[#5BADFF] to-[#1373D1] bg-clip-text text-transparent" id="Experience">
-            Working Experience
-          </h1>
-          <div className="space-y-6">
-            {experienceData.map((exp, index) => (
-              <ExperienceCard
-                key={index}
-                role={exp.role}
-                companyLogo={exp.companyLogo}
-                period={exp.period}
-                description={exp.description}
-              />
-            ))}
-          </div>
-        </div>
-        <Footer />
-      </div >
-    </HeroUIProvider>
+        </section>
+      </main>
+      <Footer />
+    </div>
   );
 }

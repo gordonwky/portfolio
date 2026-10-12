@@ -1,16 +1,19 @@
-'use client';
-import Image from "next/image";
+import Link from "next/link";
 
-export const Footer = () => {
-    return (
-        <div className="w-full h-[180px] bg-[#191919] text-white p-8" id="contact">
-            <h1 className="text-3xl font-bold mb-4">Contact</h1>
-            <div className="flex items-center space-x-2">
-                <Image src="./images/Email.png" alt="Email Icon" width={20} height={20} />
-                <span>wong31415@gmail.com</span>
-            </div>
+export function Footer() {
+  return (
+    <footer className="site-footer" id="contact">
+      <div className="section-shell">
+        <p className="eyebrow text-accent">Have a project in mind?</p>
+        <a className="site-footer__email" href="mailto:wong31415@gmail.com">Let’s talk<span>↗</span></a>
+        <div className="site-footer__meta">
+          <p>Based in Hong Kong · Open to the world</p>
+          <div><Link href="https://github.com/gordonwky/" target="_blank">GitHub ↗</Link><Link href="https://wong31415.wixsite.com/travel-blog/" target="_blank">Travel journal ↗</Link></div>
+          <p>© {new Date().getFullYear()} Gordon Wong</p>
         </div>
-    );
-};
+      </div>
+    </footer>
+  );
+}
 
 export default Footer;

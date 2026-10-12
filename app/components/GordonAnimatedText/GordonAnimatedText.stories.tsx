@@ -1,21 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { GordonAnimatedText } from './GordonAnimatedText';
+import type { Meta, StoryObj } from "@storybook/react";
+import { GordonAnimatedText } from "./GordonAnimatedText";
+import "../../globals.css";
 
-const meta = {
+const meta: Meta<typeof GordonAnimatedText> = {
     component: GordonAnimatedText,
-    title: 'Animated Text',
-    tags: ['autodocs'],
-    //👇 Our exports that end in "Data" are not stories.
+    title: "Animated Text",
+    tags: ["autodocs"],
     excludeStories: /.*Data$/,
-    args: { sentence: "I do code and \n make content about it!" }
-} satisfies Meta<typeof GordonAnimatedText>;
+    args: { sentence: "I \ndo \ncode \n \n!" },
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof GordonAnimatedText>;
 
-export const Default: Story = {
+export const Default: Story = {};
 
-};
-
-export const Pinned: Story = {
-};
+export const Pinned: Story = {};

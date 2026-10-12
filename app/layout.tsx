@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Geist_Mono,
+  Manrope,
+} from "next/font/google";
 import { HeroWrapper } from "@/components/HeroWrapper";
 import "./globals.css";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
@@ -12,9 +16,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export const metadata: Metadata = {
-  title: "Gordon's Home Page",
-  description: "Developed by Gordon Wong",
+  title: "Gordon Wong — Software Engineer",
+  description: "Portfolio of Gordon Wong, a software engineer working across applied AI, computational science, and product engineering.",
 };
 
 export default function RootLayout({
@@ -23,10 +33,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${manrope.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}
       >
         <HeroWrapper>{children}</HeroWrapper>
       </body>

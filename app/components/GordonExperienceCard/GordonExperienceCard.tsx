@@ -1,40 +1,20 @@
-// components/ExperienceCard.tsx
+"use client";
 
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { Experience } from "@/types/experience";
 
-const ExperienceCard: React.FC<Experience> = ({
-    role,
-    companyLogo,
-    period,
-    description,
-}) => {
-    return (
-        <div className="px-[16px]">
-            <div className="px-4 py-4 grid grid-cols-3 items-center gap-4">
-                <div className="col-span-1 flex flex-row items-center">
-                    <Image src={companyLogo} alt="company logo" width={100} height={60} />
-                </div>
-                <h1 className="mb-3 col-span-1 text-[20px] sm:[16px] text-white font-extrabold">
-                    {role}
-                </h1>
-                <h1 className="mb-3 col-span-1 text-[16px] sm:[14px] text-[#8491A0] font-light text-right">
-                    {period}
-                </h1>
-            </div>
-
-            <div className="px-4">
-                {description.map((item, index) => (
-                    <p
-                        key={index}
-                        className="text-[14px] text-[#8491A0] font-light mb-1"
-                    >
-                        {item}
-                    </p>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-export default ExperienceCard;
+export default function ExperienceCard({ role, company, period, description, index = 0 }: Experience & { index?: number }) {
+  return (
+    <motion.article className="experience-row" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.6, delay: index * 0.04 }}>
+      <p className="experience-row__period">{period}</p>
+      <div className="experience-row__title">
+        <h3>{role}</h3>
+        {company ? <p>{company}</p> : null}
+      </div>
+      <div className="experience-row__detail">
+        <ul>{description.map((item) => <li key={item}>{item}</li>)}</ul>
+        <span>{String(index + 1).padStart(2, "0")}</span>
+      </div>
+    </motion.article>
+  );
+}

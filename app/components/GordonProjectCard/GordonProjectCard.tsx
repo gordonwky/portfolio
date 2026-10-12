@@ -1,44 +1,36 @@
-import Image from "next/image"
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link } from "@heroui/react";
-import { ProjectCardProps } from "../../types/experience"
-const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageUrl, technologies, pageUrl, source }) => {
-    return (
-        <Card className="max-w-[400px]  bg-[#222222] rounded-lg shadow-lg px-4 py-4 ">
-            <CardHeader className="flex gap-3">
-                <Image
-                    alt="heroui logo"
-                    height={40}
-                    // radius="sm"
-                    src={imageUrl}
-                    width={40}
-                />
-                <div className="flex flex-col">
-                    <p className="text-md text-white">{title}</p>
+"use client";
 
-                </div>
-            </CardHeader>
-            <Divider className="bg-gray-400 h-[1px]" />
-            <CardBody className=" gap-1">
-                <p className="text-white">{description}</p>
-                <p className="text-gray-500">
-                    Technologies used:&nbsp;
-                    {technologies.map((tech, i) => (
-                        <span key={i}>
-                            {tech}
-                            {i < technologies.length - 1 ? ", " : ""}
-                        </span>
-                    ))}
-                </p>
-            </CardBody>
-            <Divider className="bg-gray-400 h-[1px]" />
-            <CardFooter>
+import { motion } from "framer-motion";
+import { ProjectCardProps } from "../../types/experience";
 
-                <Link isExternal showAnchorIcon className="text-blue-500" href={pageUrl}>
-                    Visit on {source}
-                </Link>
+type Props = ProjectCardProps & { index?: number };
 
-            </CardFooter>
-        </Card>
-    );
+export default function ProjectCard(props: Props) {
+  if (props.loading) {
+    return <div className="project-row project-row--loading">Loading selected work…</div>;
+  }
+
+  const { title, description, technologies, pageUrl, index = 0 } = props;
+  return (
+    <motion.a
+      href={pageUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="project-row"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.65, delay: index * 0.05 }}
+    >
+      <span className="project-row__number">{String(index + 1).padStart(2, "0")}</span>
+      <div className="project-row__body">
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <div className="project-row__tags">
+          {technologies.slice(0, 4).map((technology) => <span key={technology}>{technology}</span>)}
+        </div>
+      </div>
+      <span className="project-row__arrow" aria-hidden="true">↗</span>
+    </motion.a>
+  );
 }
-export default ProjectCard;
